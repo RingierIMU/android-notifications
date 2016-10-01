@@ -1,3 +1,6 @@
+[![Build Status on Travis:](https://travis-ci.org/OneAfricaMedia/android-notifications.svg?branch=master)](https://travis-ci.org/OneAfricaMedia/android-notifications)
+[![Release](https://img.shields.io/github/release/OneAfricaMedia/android-notifications.svg)](https://github.com/OneAfricaMedia/android-notifications/releases)
+
 # Notifications
 
 A helper library for use with the OAM cloud messaging microservice

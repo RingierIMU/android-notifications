@@ -4,14 +4,11 @@ import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
-import com.oneafricamedia.android.notifications.managers.GCMDeviceApiManager;
 import com.oneafricamedia.android.notifications.model.BackendBundle;
-import com.oneafricamedia.android.notifications.model.api.requests.GcmToggleDataRequest;
-
-import java.io.IOException;
+import com.oneafricamedia.android.notifications.util.ApiUtil;
 
 public class FcmInstanceIDListenerService extends FirebaseInstanceIdService {
-    GCMDeviceApiManager mGcmDeviceApi;
+    ApiUtil apiUtil;
 
     public FcmInstanceIDListenerService() {
     }
@@ -38,17 +35,16 @@ public class FcmInstanceIDListenerService extends FirebaseInstanceIdService {
     public void onTokenRefresh(BackendBundle backendBundle) {
         if (backendBundle != null) {
             String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-            mGcmDeviceApi = new GCMDeviceApiManager();
+
+            apiUtil = new ApiUtil(backendBundle);
 
             if (backendBundle.containsValidGcmInfo()) {
-                mGcmDeviceApi.mBaseURL = backendBundle.getGcmBaseUrl();
-                mGcmDeviceApi.mAuthenticationString = backendBundle.getGcmAuthenticationString();
-                registerDevice(refreshedToken, backendBundle.getUserId());
+                apiUtil.registerDevice(refreshedToken, backendBundle.getUserId());
 
                 if (backendBundle.containsValidApiInfo()) {
-                    mGcmDeviceApi.mBaseURL = backendBundle.getApiBaseUrl();
-                    mGcmDeviceApi.mAuthenticationString = backendBundle.getApiBaseAuthenticationString();
-                    togglePuNoFlag();
+                    if (!backendBundle.isUsingMicroserviceAsBackend()) {
+                        apiUtil.togglePuNoFlag("", true);
+                    }
                 } else {
                     Log.d("LogTag", "Registered with GCM microservice but no info on base API found.");
                 }
@@ -61,29 +57,5 @@ public class FcmInstanceIDListenerService extends FirebaseInstanceIdService {
         }
     }
 
-    /**
-     * Register device with GCM Microservice
-     *
-     * @param token  The new token
-     * @param userId The user's ID
-     */
-    private void registerDevice(String token, String userId) {
-        try {
-            mGcmDeviceApi.registerDevice(token, userId);
-        } catch (IOException e) {
-            Log.e("LogTag", "Could not register device with GCM microservice: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Set push notifications enabled for user
-     **/
-    private void togglePuNoFlag() {
-        try {
-            mGcmDeviceApi.setPushEnabled(new GcmToggleDataRequest(true));
-        } catch (IOException e) {
-            Log.e("LogTag", "Could not toggle PuNo flag: " + e.getMessage());
-        }
-    }
 
 }

@@ -14,13 +14,15 @@ public class BackendBundle {
     private String apiBaseUrl;
     private String apiBaseAuthenticationString;
     private String userId;
+    private boolean usingMicroserviceAsBackend;
 
-    public BackendBundle(String gcmBaseUrl, String gcmAuthenticationString, String apiBaseUrl, String apiBaseAuthenticationString, String userId) {
+    public BackendBundle(String gcmBaseUrl, String gcmAuthenticationString, String apiBaseUrl, String apiBaseAuthenticationString, String userId, boolean usingMicroserviceAsBackend) {
         this.gcmBaseUrl = gcmBaseUrl;
         this.gcmAuthenticationString = gcmAuthenticationString;
         this.apiBaseUrl = apiBaseUrl;
         this.apiBaseAuthenticationString = apiBaseAuthenticationString;
         this.userId = userId;
+        this.usingMicroserviceAsBackend = usingMicroserviceAsBackend;
     }
 
     public String getGcmBaseUrl() {
@@ -63,6 +65,14 @@ public class BackendBundle {
         this.userId = userId;
     }
 
+    public boolean isUsingMicroserviceAsBackend() {
+        return usingMicroserviceAsBackend;
+    }
+
+    public void setUsingMicroserviceAsBackend(boolean usingMicroserviceAsBackend) {
+        this.usingMicroserviceAsBackend = usingMicroserviceAsBackend;
+    }
+
     public boolean containsValidApiInfo() {
         if (!URLUtil.isValidUrl(apiBaseUrl) || TextUtils.isEmpty(apiBaseAuthenticationString))
             return false;
@@ -74,4 +84,6 @@ public class BackendBundle {
             return false;
         return true;
     }
+
+
 }
