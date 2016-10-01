@@ -1,0 +1,68 @@
+apply plugin: 'com.android.library'
+
+ext {
+    bintrayRepo = 'android'
+    bintrayName = 'notifications'
+
+    publishedGroupId = 'com.oneafricamedia.android'
+    libraryName = 'Notifications'
+    artifact = 'notifications'
+
+    libraryDescription = 'A library for use with our FCM microservice'
+
+    siteUrl = 'https://github.com/OneAfricaMedia/android-notifications'
+    gitUrl = 'https://github.com/OneAfricaMedia/android-notifications.git'
+
+    libraryVersion = '0.0.1'
+
+    developerId = 'oneafricamedia'
+    developerName = 'One Africa media'
+    developerEmail = 'mobile-team@oneafricamedia.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.2"
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+
+    androidTestCompile "com.android.support:support-annotations:$rootProject.googleSupportLibraryVersion"
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support.test:rules:0.5'
+
+    compile "com.google.android.gms:play-services-gcm:$rootProject.firebaseVersion"
+    compile "com.google.firebase:firebase-core:$rootProject.firebaseVersion"
+    compile "com.google.firebase:firebase-messaging:$rootProject.firebaseVersion"
+
+    compile "org.greenrobot:eventbus:$rootProject.greenrobotEventbusVersion"
+    compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
+    compile "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
+    compile "com.google.code.gson:gson:$rootProject.gsonVersion"
+    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+}
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
