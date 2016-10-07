@@ -36,3 +36,11 @@ os:
 
 script:
   - ./gradlew build connectedCheck
+
+deploy:
+  provider: script
+  script: gradlew install bintrayUpload
+  skip_cleanup: true
+  on:
+    tags: true
+
