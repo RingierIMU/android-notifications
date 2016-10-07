@@ -39,7 +39,7 @@ script:
 
 deploy:
   provider: script
-  script: gradlew install bintrayUpload
+  script: ./gradlew install bintrayUpload
   skip_cleanup: true
   on:
     tags: true
