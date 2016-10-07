@@ -7,7 +7,6 @@ android:
     - platform-tools
     - build-tools-24.0.2
     - android-24
-    - sys-img-x86-android-24
     - sys-img-armeabi-v7a-android-24
     - extra-android-support
     - extra-google-google_play_services
@@ -20,7 +19,10 @@ android:
 
 before_script:
   - curl ${GOOGLE_SERVICES_JSON} -o app/google-services.json
-  - curl ${GRADLE_PROPERTIES} -o local.properties
+  - test -f local.properties.example && cp local.properties.example local.properties
+  - test -f local.properties && sed -i -e s/BINTRAY_APIKEY/${BINTRAY_APIKEY}/g local.properties
+  - test -f local.properties && sed -i -e s/BINTRAY_USER/${BINTRAY_USER}/g local.properties
+  - test -f local.properties && sed -i -e s/BINTRAY_GPG_PASSWORD/${BINTRAY_GPG_PASSWORD}/g local.properties
   - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
   - emulator -avd test -noskin -no-window &
   - android-wait-for-emulator
