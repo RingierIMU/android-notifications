@@ -2,8 +2,13 @@ package com.oneafricamedia.android.notificationsexampleapp.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 import com.oneafricamedia.android.notifications.events.MarketingMessageReceived;
 import com.oneafricamedia.android.notifications.events.UpdateListingLookupsMessage;
 import com.oneafricamedia.android.notificationsexampleapp.R;
@@ -15,6 +20,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.UUID;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -23,6 +30,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         EventBus.getDefault().register(this);
+
+        final Button button = (Button) findViewById(R.id.buttonSendUpstreamMessageMain);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FirebaseMessaging fm = FirebaseMessaging.getInstance();
+                fm.send(new RemoteMessage.Builder("315874173180@gcm.googleapis.com")
+                        .setMessageId(UUID.randomUUID().toString())
+                        .addData("ACTION", "SEND_FEEDBACK")
+                        .addData("MESSAGE", ((EditText) findViewById(R.id.textViewChatMain))
+                                .getText().toString())
+                        .build());
+            }
+        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

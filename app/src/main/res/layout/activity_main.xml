@@ -15,4 +15,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="" />
+
+    <Button
+        android:id="@+id/buttonSendUpstreamMessageMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="Send an example message upstream" />
+
+    <EditText
+        android:id="@+id/textViewChatMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonSendUpstreamMessageMain"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="21dp"
+        android:text="Type your message here..."
+        tools:text="Type your message here..." />
 </RelativeLayout>
