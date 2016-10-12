@@ -38,7 +38,7 @@ public class SendUpstreamMessageTest {
         appCompatEditText2.perform(replaceText("Hello World!"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.buttonSendUpstreamMessageMain),
+                allOf(withId(R.id.buttonSendUpstreamMessageMainSaveBlob),
                         isDisplayed()));
         appCompatButton.perform(click());
 
