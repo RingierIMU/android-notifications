@@ -26,7 +26,9 @@ before_script:
   - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
   - emulator -avd test -no-window &
   - android-wait-for-emulator
+  - adb shell screencap -p /sdcard/before-key-82.png; adb pull /sdcard/before-key-82.png; curl --form "fileupload=@before-key-82.png" http://uploads.im/api?upload
   - adb shell input keyevent 82 &
+  - adb shell screencap -p /sdcard/after-key-82.png; adb pull /sdcard/after-key-82.png; curl --form "fileupload=@after-key-82.png" http://uploads.im/api?upload
 
 jdk:
   - oraclejdk8
