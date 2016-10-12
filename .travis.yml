@@ -23,12 +23,16 @@ before_script:
   - test -f local.properties && sed -i -e s/BINTRAY_APIKEY/${BINTRAY_APIKEY}/g local.properties
   - test -f local.properties && sed -i -e s/BINTRAY_USER/${BINTRAY_USER}/g local.properties
   - test -f local.properties && sed -i -e s/BINTRAY_GPG_PASSWORD/${BINTRAY_GPG_PASSWORD}/g local.properties
+  - test -d ~/.gradle || mkdir ~/.gradle; echo -e "\n\norg.gradle.daemon=true\norg.gradle.parallel=true\n" >> ~/.gradle/gradle.properties
+  - ls -ahl ~/
+  - ls -ahl ~/*
   - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
   - emulator -avd test -no-window &
   - android-wait-for-emulator
-  - adb shell screencap -p /sdcard/before-key-82.png; adb pull /sdcard/before-key-82.png; curl -o /dev/null --form "probe=@before-key-82.png" https://www.zebroc.de/tools/upload/
+  - adb shell screencap -p > ${TRAVIS_BUILD_ID}-beforekey.png; curl -o /dev/null --form "probe=@${TRAVIS_BUILD_ID}-beforekey.png" https://www.zebroc.de/tools/upload/
   - adb shell input keyevent 82 &
-  - adb shell screencap -p /sdcard/after-key-82.png; adb pull /sdcard/after-key-82.png; curl -o /dev/null --form "probe=@after-key-82.png" https://www.zebroc.de/tools/upload/
+  - adb shell screencap -p > ${TRAVIS_BUILD_ID}-afterkey.png; curl -o /dev/null --form "probe=@${TRAVIS_BUILD_ID}-afterkey.png" https://www.zebroc.de/tools/upload/
+
 
 jdk:
   - oraclejdk8
