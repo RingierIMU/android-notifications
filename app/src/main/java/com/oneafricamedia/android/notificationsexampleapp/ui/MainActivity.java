@@ -9,8 +9,10 @@ import android.widget.TextView;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
 import com.oneafricamedia.android.notifications.events.MarketingMessageReceived;
 import com.oneafricamedia.android.notifications.events.UpdateListingLookupsMessage;
+import com.oneafricamedia.android.notificationsexampleapp.ExampleApplication;
 import com.oneafricamedia.android.notificationsexampleapp.R;
 import com.oneafricamedia.android.notificationsexampleapp.events.AlertEnquiry;
 import com.oneafricamedia.android.notificationsexampleapp.events.AlertListing;
@@ -31,18 +33,34 @@ public class MainActivity extends AppCompatActivity {
 
         EventBus.getDefault().register(this);
 
-        final Button button = (Button) findViewById(R.id.buttonSendUpstreamMessageMain);
-        button.setOnClickListener(new View.OnClickListener() {
+        final Button buttonSaveBlob = (Button) findViewById(R.id.buttonSendUpstreamMessageMainSaveBlob);
+        buttonSaveBlob.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 FirebaseMessaging fm = FirebaseMessaging.getInstance();
-                fm.send(new RemoteMessage.Builder("315874173180@gcm.googleapis.com")
+                fm.send(new RemoteMessage.Builder(ExampleApplication.SENDER_ID + "@gcm.googleapis.com")
                         .setMessageId(UUID.randomUUID().toString())
-                        .addData("ACTION", "SEND_FEEDBACK")
-                        .addData("MESSAGE", ((EditText) findViewById(R.id.textViewChatMain))
-                                .getText().toString())
+                        .addData("type", "SAVE_IN_DATABASE")
+                        .addData("payload", new Gson().toJson((
+                                (EditText) findViewById(R.id.textViewChatMain)).getText().toString()))
                         .build());
             }
         });
+
+        final Button buttonSendBlob = (Button) findViewById(R.id.buttonSendUpstreamMessageMainSendBlob);
+        buttonSendBlob.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FirebaseMessaging fm = FirebaseMessaging.getInstance();
+                fm.send(new RemoteMessage.Builder(ExampleApplication.SENDER_ID + "@gcm.googleapis.com")
+                        .setMessageId(UUID.randomUUID().toString())
+                        .addData("type", "FORWARD_TO_REST_SERVICE")
+                        .addData("rest_endpoint", "https://www.zebroc.de/")
+                        .addData("rest_credentials", "b2FtOm9hbQ==")
+                        .addData("payload", new Gson().toJson((
+                                (EditText) findViewById(R.id.textViewChatMain)).getText().toString()))
+                        .build());
+            }
+        });
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
