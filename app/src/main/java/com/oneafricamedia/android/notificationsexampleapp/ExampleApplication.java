@@ -11,6 +11,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 public class ExampleApplication extends Application {
 
+    public static final String SENDER_ID="000000000000";
+
     private Long userId;
 
     public ExampleApplication() {
