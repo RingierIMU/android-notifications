@@ -7,9 +7,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
+import com.oneafricamedia.android.notifications.FcmMessaging;
 import com.oneafricamedia.android.notifications.events.MarketingMessageReceived;
 import com.oneafricamedia.android.notifications.events.UpdateListingLookupsMessage;
 import com.oneafricamedia.android.notificationsexampleapp.ExampleApplication;
@@ -22,9 +21,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.UUID;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
+
+    public FcmMessaging mFcmMessenger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,32 +33,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         EventBus.getDefault().register(this);
+        this.mFcmMessenger = ((ExampleApplication) getApplication()).getFcmMessenger();
 
         final Button buttonSaveBlob = (Button) findViewById(R.id.buttonSendUpstreamMessageMainSaveBlob);
         buttonSaveBlob.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                FirebaseMessaging fm = FirebaseMessaging.getInstance();
-                fm.send(new RemoteMessage.Builder(ExampleApplication.SENDER_ID + "@gcm.googleapis.com")
-                        .setMessageId(UUID.randomUUID().toString())
-                        .addData("type", "SAVE_IN_DATABASE")
-                        .addData("payload", new Gson().toJson((
-                                (EditText) findViewById(R.id.textViewChatMain)).getText().toString()))
-                        .build());
+                HashMap<String, String> data = new HashMap<>();
+                data.put("type", "SAVE_IN_DATABASE");
+                data.put("payload", new Gson().toJson((
+                        (EditText) findViewById(R.id.textViewChatMain)).getText().toString()));
+                mFcmMessenger.sendRawData(data);
             }
         });
 
         final Button buttonSendBlob = (Button) findViewById(R.id.buttonSendUpstreamMessageMainSendBlob);
         buttonSendBlob.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                FirebaseMessaging fm = FirebaseMessaging.getInstance();
-                fm.send(new RemoteMessage.Builder(ExampleApplication.SENDER_ID + "@gcm.googleapis.com")
-                        .setMessageId(UUID.randomUUID().toString())
-                        .addData("type", "FORWARD_TO_REST_SERVICE")
-                        .addData("rest_endpoint", "https://www.zebroc.de/")
-                        .addData("rest_credentials", "b2FtOm9hbQ==")
-                        .addData("payload", new Gson().toJson((
-                                (EditText) findViewById(R.id.textViewChatMain)).getText().toString()))
-                        .build());
+                HashMap<String, String> data = new HashMap<>();
+                data.put("type", "FORWARD_TO_REST_SERVICE");
+                data.put("rest_endpoint", "https://www.zebroc.de/");
+                data.put("rest_credentials", "b2FtOm9hbQ==");
+                data.put("payload", new Gson().toJson((
+                        (EditText) findViewById(R.id.textViewChatMain)).getText().toString()));
+                mFcmMessenger.sendRawData(data);
             }
         });
 
