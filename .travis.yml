@@ -24,15 +24,10 @@ before_script:
   - test -f local.properties && sed -i -e s/BINTRAY_USER/${BINTRAY_USER}/g local.properties
   - test -f local.properties && sed -i -e s/BINTRAY_GPG_PASSWORD/${BINTRAY_GPG_PASSWORD}/g local.properties
   - test -d ~/.gradle || mkdir ~/.gradle; echo -e "\n\norg.gradle.daemon=true\norg.gradle.parallel=true\n" >> ~/.gradle/gradle.properties
-  - ls -ahl ~/
-  - ls -ahl ~/*
   - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
   - emulator -avd test -no-window &
   - android-wait-for-emulator
-  - adb shell screencap -p > ${TRAVIS_BUILD_ID}-beforekey.png; curl -o /dev/null --form "probe=@${TRAVIS_BUILD_ID}-beforekey.png" https://www.zebroc.de/tools/upload/
   - adb shell input keyevent 82 &
-  - adb shell screencap -p > ${TRAVIS_BUILD_ID}-afterkey.png; curl -o /dev/null --form "probe=@${TRAVIS_BUILD_ID}-afterkey.png" https://www.zebroc.de/tools/upload/
-
 
 jdk:
   - oraclejdk8
