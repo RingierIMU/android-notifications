@@ -17,18 +17,18 @@ public class GCMDeviceApiManager extends BaseApiManager<GCMMicroServiceRESTClien
         super(GCMMicroServiceRESTClient.class);
     }
 
-    public void registerDevice(String token, String userId, Callback callback) throws IOException {
+    public void registerDevice(String path, String token, String userId, Callback callback) throws IOException {
         setApiInterface();
 
-        callAsync(mApiInterface.registerDevice(mAuthenticationString,
+        callAsync(mApiInterface.registerDevice(path, mAuthenticationString,
                 new UserDeviceRegistration(token, String.valueOf(userId))),
                 callback);
     }
 
-    public void setPushEnabled(ApiTogglePunoRequest apiTogglePunoRequest, Callback callback) throws IOException {
+    public void setPushEnabled(String path, ApiTogglePunoRequest apiTogglePunoRequest, Callback callback) throws IOException {
         setApiInterface();
 
-        callAsync(mApiInterface.togglePunoFlagApi(mAuthenticationString, apiTogglePunoRequest),
+        callAsync(mApiInterface.togglePunoFlagApi(path, mAuthenticationString, apiTogglePunoRequest),
                 callback);
     }
 

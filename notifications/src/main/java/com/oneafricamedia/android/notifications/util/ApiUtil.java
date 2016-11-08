@@ -17,14 +17,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ApiUtil implements Callback<UserDeviceRegistration> {
-    public GCMDeviceApiManager mGcmDeviceApi;
+    private GCMDeviceApiManager mGcmDeviceApi;
+    private BackendBundle mBackendBundle;
 
     public ApiUtil(BackendBundle backendBundle) {
         this.mGcmDeviceApi = new GCMDeviceApiManager();
-        mGcmDeviceApi.mBaseURL = backendBundle.getGcmBaseUrl();
-        mGcmDeviceApi.mAuthenticationString = backendBundle.getGcmAuthenticationString();
-        mGcmDeviceApi.mBaseURL = backendBundle.getApiBaseUrl();
-        mGcmDeviceApi.mAuthenticationString = backendBundle.getApiBaseAuthenticationString();
+        this.mBackendBundle = backendBundle;
     }
 
     /**
@@ -34,8 +32,10 @@ public class ApiUtil implements Callback<UserDeviceRegistration> {
      * @param userId The user's ID
      */
     public void registerDevice(String token, String userId) {
+        mGcmDeviceApi.mBaseURL = mBackendBundle.getGcmBaseUrl();
+        mGcmDeviceApi.mAuthenticationString = mBackendBundle.getGcmAuthenticationString();
         try {
-            mGcmDeviceApi.registerDevice(token, userId, this);
+            mGcmDeviceApi.registerDevice(mBackendBundle.getGcmUrlPath(), token, userId, this);
         } catch (IOException e) {
             Log.e("LogTag", "Could not register device with GCM microservice: " + e.getMessage());
         }
@@ -45,8 +45,10 @@ public class ApiUtil implements Callback<UserDeviceRegistration> {
      * Set push notifications enabled for user
      **/
     public void togglePuNoFlag(String user_id, boolean flag) {
+        mGcmDeviceApi.mBaseURL = mBackendBundle.getApiBaseUrl();
+        mGcmDeviceApi.mAuthenticationString = mBackendBundle.getApiBaseAuthenticationString();
         try {
-            mGcmDeviceApi.setPushEnabled(new ApiTogglePunoRequest(user_id, flag), new Callback() {
+            mGcmDeviceApi.setPushEnabled(mBackendBundle.getApiUrlPath(), new ApiTogglePunoRequest(user_id, flag), new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {
                     if (response.isSuccessful())

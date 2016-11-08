@@ -12,8 +12,10 @@ public class MyAppFcmInstanceIDListenerService extends FcmInstanceIDListenerServ
                 ((ExampleApplication) getApplication()).getUserId().toString() : "0";
 
         super.onTokenRefresh(new BackendBundle("http://server:9000/",
+                "users/me/device",
                 "Basic Base64-123456789==",
                 "http://server:9000/",
+                "users/me",
                 "Basic Base64-123456789==",
                 userId,
                 true)

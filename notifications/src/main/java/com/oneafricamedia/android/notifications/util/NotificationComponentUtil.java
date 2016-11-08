@@ -18,11 +18,8 @@ import java.util.Calendar;
 import java.util.Map;
 
 public class NotificationComponentUtil {
-    public static final String DEVICE_REGISTRATION_ENDPOINT = "users/me/device";
-    public static final String USER_ME_ENDPOINT = "users/me";
 
     public static final String KEY_TYPE = "type";
-    public static final String KEY_ENTITY_ID = "entity_id";
     public static final String KEY_PAYLOAD = "payload";
 
     public static final int NOTIFICATION_START_HOUR = 8;
