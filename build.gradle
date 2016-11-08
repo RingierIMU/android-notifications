@@ -23,7 +23,7 @@ task clean(type: Delete) {
 ext {
     greenrobotEventbusVersion = '3.0.0'
     retrofitVersion = '2.1.0'
-    firebaseVersion = '9.6.1'
-    googleSupportLibraryVersion='24.2.1'
+    firebaseVersion = '9.8.0'
+    googleSupportLibraryVersion='25.0.0'
     gsonVersion = '2.7'
 }
