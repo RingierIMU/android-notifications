@@ -9,13 +9,14 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.PUT;
+import retrofit2.http.Url;
 
 public interface GCMMicroServiceRESTClient {
 
-    @PUT(NotificationComponentUtil.DEVICE_REGISTRATION_ENDPOINT)
-    Call<UserDeviceRegistration> registerDevice(@Header("Authorization") String basicAuth, @Body UserDeviceRegistration registerDevice);
+    @PUT
+    Call<UserDeviceRegistration> registerDevice(@Url String url, @Header("Authorization") String basicAuth, @Body UserDeviceRegistration registerDevice);
 
-    @PUT(NotificationComponentUtil.USER_ME_ENDPOINT)
-    Call<UserAPIResult> togglePunoFlagApi(@Header("Authorization") String basicAuth, @Body ApiTogglePunoRequest apiTogglePunoRequest);
+    @PUT
+    Call<UserAPIResult> togglePunoFlagApi(@Url String url, @Header("Authorization") String basicAuth, @Body ApiTogglePunoRequest apiTogglePunoRequest);
 
 }

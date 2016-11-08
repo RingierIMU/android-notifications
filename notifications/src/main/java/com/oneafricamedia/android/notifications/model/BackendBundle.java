@@ -11,15 +11,19 @@ import android.webkit.URLUtil;
 public class BackendBundle {
     private String gcmBaseUrl;
     private String gcmAuthenticationString;
+    private String gcmUrlPath;
     private String apiBaseUrl;
     private String apiBaseAuthenticationString;
+    private String apiUrlPath;
     private String userId;
     private boolean usingMicroserviceAsBackend;
 
-    public BackendBundle(String gcmBaseUrl, String gcmAuthenticationString, String apiBaseUrl, String apiBaseAuthenticationString, String userId, boolean usingMicroserviceAsBackend) {
+    public BackendBundle(String gcmBaseUrl, String gcmUrlPath, String gcmAuthenticationString, String apiBaseUrl, String apiUrlPath, String apiBaseAuthenticationString, String userId, boolean usingMicroserviceAsBackend) {
         this.gcmBaseUrl = gcmBaseUrl;
+        this.gcmUrlPath = gcmUrlPath;
         this.gcmAuthenticationString = gcmAuthenticationString;
         this.apiBaseUrl = apiBaseUrl;
+        this.apiUrlPath = apiUrlPath;
         this.apiBaseAuthenticationString = apiBaseAuthenticationString;
         this.userId = userId;
         this.usingMicroserviceAsBackend = usingMicroserviceAsBackend;
@@ -73,14 +77,30 @@ public class BackendBundle {
         this.usingMicroserviceAsBackend = usingMicroserviceAsBackend;
     }
 
+    public String getGcmUrlPath() {
+        return gcmUrlPath;
+    }
+
+    public void setGcmUrlPath(String gcmUrlPath) {
+        this.gcmUrlPath = gcmUrlPath;
+    }
+
+    public String getApiUrlPath() {
+        return apiUrlPath;
+    }
+
+    public void setApiUrlPath(String apiUrlPath) {
+        this.apiUrlPath = apiUrlPath;
+    }
+
     public boolean containsValidApiInfo() {
-        if (!URLUtil.isValidUrl(apiBaseUrl) || TextUtils.isEmpty(apiBaseAuthenticationString))
+        if (!URLUtil.isValidUrl(apiBaseUrl) || TextUtils.isEmpty(apiBaseAuthenticationString) || TextUtils.isEmpty(apiUrlPath))
             return false;
         return true;
     }
 
     public boolean containsValidGcmInfo() {
-        if (!URLUtil.isValidUrl(gcmBaseUrl) || TextUtils.isEmpty(gcmAuthenticationString))
+        if (!URLUtil.isValidUrl(gcmBaseUrl) || TextUtils.isEmpty(gcmAuthenticationString) || TextUtils.isEmpty(gcmUrlPath))
             return false;
         return true;
     }
